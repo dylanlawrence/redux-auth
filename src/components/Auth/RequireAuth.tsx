@@ -6,7 +6,6 @@ type RequireProps = {
     children: JSX.Element
 };
 const RequireAuth = (props: RequireProps) => {
-
     const user = useSelector(selectCurrentUser);
     /*
         if (!auth.user) {

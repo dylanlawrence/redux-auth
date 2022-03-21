@@ -4,16 +4,15 @@ import {
     InputRightElement,
     VStack,
     Button,
-    Divider,
     Center,
     useToast
 } from "@chakra-ui/react"
 import React, {ChangeEvent, useState} from "react"
 import {setCredentials} from "../../features/auth/authSlice"
 import {useNavigate} from "react-router-dom"
-import {ProtectedComponent} from "./ProtectedComponent"
 import {useAppDispatch} from "../../app/hooks"
-import {useLoginMutation, LoginRequest, UserResponse} from "../../app/services/auth"
+import {LoginRequest} from "../../features/auth/auth.types";
+import {useLoginMutation} from "../../app/services/auth";
 
 function PasswordInput({name, onChange}: {
     name: string;
@@ -48,18 +47,18 @@ export const Login = () => {
             username: '',
             password: '',
         })
-        const [$login, {isLoading}] = useLoginMutation()
+        const [$login] = useLoginMutation()
 
         const onSubmit = async () => {
             try {
-                console.log(formState)
-                const user = await $login(formState)
-                    .then((credentials) => {
-                        console.log(credentials)
-                    });
-                //.catch((error) => console.error(error))
+                await $login(formState)
+                    .unwrap()
+                    .then((user) => {
+                        dispatch(setCredentials(user))
+                        navigate('/protected');
+                    })
+                    .catch((error) => console.error(error))
             } catch (err) {
-                console.error(err);
                 toast({
                     status: 'error',
                     title: 'Error',
@@ -69,7 +68,7 @@ export const Login = () => {
             }
         };
 
-        const handleChange = ({target: {name, value}}: React.ChangeEvent<HTMLInputElement>) =>
+        const handleChange = ({target: {name, value}}: ChangeEvent<HTMLInputElement>) =>
             setFormState((prev) => ({...prev, [name]: value}));
 
         return (
@@ -89,7 +88,7 @@ export const Login = () => {
                             isFullWidth
                             onClick={onSubmit}
                             colorScheme="blue"
-                            isLoading={isLoading}
+                        /*        isLoading={isLoading}*/
                     >
                         Login
                     </Button>

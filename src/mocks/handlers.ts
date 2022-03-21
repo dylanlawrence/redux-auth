@@ -5,24 +5,25 @@ const token = nanoid()
 
 export const handlers = [
     rest.get('/protected', (req, res, ctx) => {
+
         const headers = req.headers.all()
+
         if (headers.authorization !== `Bearer ${token}`) {
             return res(
-                ctx.json({
-                    message: 'You shall not pass. Please login first.',
-                }),
+                ctx.json({message: 'Please login'}),
                 ctx.status(401)
             )
         }
         return res(
             ctx.json({
-                message:
-                    'Join us on the Reactiflux Discord server in #redux if you have any questions.',
+                message: 'Request success!',
             })
         )
     }),
     rest.post('/login', (req, res, ctx) => {
-        console.log('LOGIN');
+
+        sessionStorage.setItem('is-authenticated', 'true');
+
         return res(
             ctx.delay(400),
             ctx.json({
@@ -32,6 +33,14 @@ export const handlers = [
                 },
                 token,
             })
+        )
+    }),
+    rest.post('/logout', (req, res, ctx) => {
+        const headers = req.headers.all()
+        console.log(headers, req, res);
+        return res(
+            ctx.delay(400),
+            ctx.json({msg: 'success'})
         )
     }),
 ]

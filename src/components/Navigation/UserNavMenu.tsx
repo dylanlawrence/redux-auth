@@ -1,13 +1,40 @@
 import {Avatar, Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList} from "@chakra-ui/react";
+import NavLink from "./NavLink";
+import {LogoutRequest} from "../../features/auth/auth.types";
+
+import {useLogoutMutation} from "../../app/services/auth";
+import { useState } from "react";
+import {setCredentials} from "../../features/auth/authSlice";
+import {Link as RLink, useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../app/hooks";
+
 
 
 const UserNavMenu = () => {
 
-    const Links = [
-        {label: 'Home', path: '/'},
-        {label: 'Auth Required', path: '/protected'},
-        {label: 'Role Required', path: '/'}
-    ];
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
+    const [formState, setFormState] = useState<LogoutRequest>({
+        session_id: '',
+    })
+    const [$logout] = useLogoutMutation()
+
+    const onLogout = async () => {
+        try {
+            await $logout(formState)
+                .unwrap()
+                .then((user) => {
+                    dispatch(setCredentials({}))
+                    navigate('/login');
+                })
+                .catch((error) => console.error(error))
+        } catch (err) {
+
+        }
+    }
+
+
 
     return (
 
@@ -21,24 +48,17 @@ const UserNavMenu = () => {
                 <Avatar
                     size={'sm'}
                     src={
-                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                        '/profile-placeholder.png'
                     }
                 />
             </MenuButton>
             <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
+                <MenuItem as={RLink} to={'/protected'}>Dashboard</MenuItem>
                 <MenuDivider/>
-                <MenuItem>Link 3</MenuItem>
+                <MenuItem onClick={onLogout}>Logout</MenuItem>
             </MenuList>
         </Menu>
     );
 };
 
 export default UserNavMenu;
-
-
-
-
-
-

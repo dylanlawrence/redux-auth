@@ -6,7 +6,11 @@ export const Home = () => {
     return (
         <>
             <Container maxW='5xl'  centerContent>
-                <h1>Pirate Lingo</h1>
+
+
+                <h1 ><Text fontSize='6xl'>HOME PAGE </Text></h1>
+
+                <h2>Some Pirate Lingo</h2>
                 <Center bg='gray.50'>
                     <Stack
                         direction={{ base: "column", md: "row" }} spacing={4} p={4}
