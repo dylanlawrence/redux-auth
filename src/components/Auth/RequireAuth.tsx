@@ -18,10 +18,13 @@ const RequireAuth = (props: RequireProps) => {
     } else if( props.requires ) {
         // @ts-ignore
         let reqRole = props.requires?.role;
+
+        // @ts-ignore
         let hasRole = user.roles.includes('admin') || false;
 
         if( reqRole && !hasRole ) {
-             hasRole = user.roles.includes(reqRole)
+             // @ts-ignore
+            hasRole = user.roles.includes(reqRole)
         }
         if(!hasRole){
             return <Navigate to="/login" state={{ from: location }} replace />;

@@ -1,13 +1,18 @@
-
 export type UserState = {
     user?: User | null
     logged_in: Boolean
 }
 
 export interface User {
-    roles: any
-    email: string
+    email?: string
+    roles?: []
     avatar?: string
-    first_name: string
-    last_name: string
+    profile?: {
+        name?: string
+        company?: string
+        dob?: Date,
+        address?: string
+        about?: string
+        phone?: string
+    }
 }

@@ -27,7 +27,8 @@ const UserNavMenu = () => {
                     src={`https://avatars.dicebear.com/api/avataaars/${user?.avatar}`}
                 />
             </MenuButton>
-            <MenuList>
+            <MenuList zIndex={15}>
+                <MenuItem as={RLink} to={'/user/me'}>Account</MenuItem>
                 <MenuItem as={RLink} to={'/dashboard'}>Dashboard</MenuItem>
                 <MenuDivider/>
                 <Logout as={MenuItem}/>

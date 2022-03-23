@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Chart from 'react-apexcharts'
 
 export default class LineChart extends Component {
+    // @ts-ignore
     constructor(props) {
         super(props);
         this.state = {
@@ -20,8 +21,10 @@ export default class LineChart extends Component {
         }
     }
     render() {
+
         return (
-            <Chart options={this.state.options} series={this.state.series} type="line" width={500} height={320} />
+            // @ts-ignore
+            <Chart options={this.state.options} series={this.state.series} type="line" height={320} />
         )
     }
 }

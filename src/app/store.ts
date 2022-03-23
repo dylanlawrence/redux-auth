@@ -6,6 +6,7 @@ import userReducer from '../features/user/userSlice'
 
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {api} from "./services/auth";
 //    [api.reducerPath]: api.reducer,
@@ -16,7 +17,7 @@ const reducers = combineReducers({
 });
 const persistConfig = {
     key: 'root',
-    storage,
+    storage: AsyncStorage,
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)

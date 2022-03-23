@@ -8,9 +8,9 @@ const initUser = {
         avatar: '',
         first_name: '',
         last_name: '',
-        roles: [],
-        logged_in: false
-    }
+        roles: []
+    },
+    logged_in: false
 } as UserState
 
 const slice = createSlice({

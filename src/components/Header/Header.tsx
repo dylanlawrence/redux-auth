@@ -1,5 +1,3 @@
-import logo from '../../logo.svg';
-
 import {
     Box,
     Flex,
@@ -14,15 +12,12 @@ import UserNavMenu from "../Navigation/UserNavMenu";
 import NavLink from "../Navigation/NavLink";
 import {useSelector} from "react-redux";
 import {getCurrentAuth} from "../../features/auth/authSlice";
-import {GoThreeBars} from "react-icons/all";
 import {getUserLoggedIn} from "../../features/user/userSlice";
-
+import Logo from "../Logo/Logo";
+import {GoThreeBars} from "react-icons/go";
 
 export default function Header() {
-
-    const user = useSelector(getCurrentAuth);
     const loggedIn = useSelector(getUserLoggedIn);
-
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     return (
@@ -38,7 +33,7 @@ export default function Header() {
                     />
                     <HStack spacing={8} alignItems={'center'}>
                         <Flex alignItems={'center'}>
-                            <NavLink to="/" bg=''><img src={logo}/></NavLink>
+                            <NavLink to="/" bg=''><Logo/></NavLink>
                         </Flex>
                         <HStack
                             as={'nav'}
