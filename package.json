@@ -4,21 +4,22 @@
   "private": true,
   "scripts": {
     "vite:dev": "vite",
-    "vite:build": "tsc && vite build",
-    "vite:preview": "vite preview"
+    "vite:build": "tsc && vite build --debug",
+    "vite:preview": "vite preview "
   },
   "dependencies": {
-    "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.6",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
     "@reduxjs/toolkit": "^1.8.0",
     "@rollup/plugin-replace": "^4.0.0",
     "axios": "^0.26.1",
     "framer-motion": "^6",
     "msw": "^0.39.2",
     "react": "^17.0.2",
+    "react-apexcharts": "^1.4.0",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
     "react-redux": "^7.2.6",
     "react-router": "^6.2.2",
     "react-router-dom": "^6.2.2",

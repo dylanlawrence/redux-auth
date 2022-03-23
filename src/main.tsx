@@ -7,22 +7,37 @@ import {Provider} from 'react-redux'
 import {ChakraProvider} from "@chakra-ui/react"
 import {BrowserRouter} from "react-router-dom"
 import * as serviceWorker from "./serviceWorker"
-import { worker } from "./mocks/browser"
+import {worker} from "./mocks/browser"
 
-import { persistStore } from "redux-persist"
+import {persistStore} from "redux-persist"
 import {PersistGate} from "redux-persist/integration/react"
+
 let persist = persistStore(store)
 
-worker.start({quiet: true}).then(() =>
+
+import {extendTheme} from '@chakra-ui/react'
+
+// 2. Extend the theme to include custom colors, fonts, etc
+const colors = {
+    brand: {
+        900: '#1a365d',
+        800: '#153e75',
+        700: '#2a69ac',
+    },
+}
+
+const theme = extendTheme({colors})
+
+worker.start({onUnhandledRequest: 'bypass', quiet: true}).then(() =>
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persist}>
-                <ChakraProvider>
-                    <BrowserRouter>
-                        <App/>
-                    </BrowserRouter>
-                </ChakraProvider>
+                    <ChakraProvider theme={theme}>
+                        <BrowserRouter>
+                            <App/>
+                        </BrowserRouter>
+                    </ChakraProvider>
                 </PersistGate>
             </Provider>
         </React.StrictMode>,

@@ -1,5 +1,4 @@
 import logo from '../../logo.svg';
-import burger from '../../images/icons/hamburger.svg';
 
 import {
     Box,
@@ -14,12 +13,15 @@ import NavMenu from "../Navigation/NavMenu";
 import UserNavMenu from "../Navigation/UserNavMenu";
 import NavLink from "../Navigation/NavLink";
 import {useSelector} from "react-redux";
-import {selectCurrentUser} from "../../features/auth/authSlice";
+import {getCurrentAuth} from "../../features/auth/authSlice";
+import {GoThreeBars} from "react-icons/all";
+import {getUserLoggedIn} from "../../features/user/userSlice";
 
 
 export default function Header() {
 
-    const user = useSelector(selectCurrentUser);
+    const user = useSelector(getCurrentAuth);
+    const loggedIn = useSelector(getUserLoggedIn);
 
     const {isOpen, onOpen, onClose} = useDisclosure();
 
@@ -27,17 +29,16 @@ export default function Header() {
         <>
             <Box bg={useColorModeValue('gray.300', 'gray.900')} px={4}>
                 <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-                    <IconButton
-                        size={'md'}
-                        aria-label={'Open Menu'}
-                        display={{md: 'none'}}
-                        onClick={isOpen ? onClose : onOpen}
-                        icon={<img src={burger}/>}
+                    <IconButton size={'sm'}
+                                aria-label={'Open Menu'} p={1}
+                                display={{md: 'none'}}
+                                color="blue.400"
+                                onClick={isOpen ? onClose : onOpen}
+                                icon={<GoThreeBars size={24}/>}
                     />
                     <HStack spacing={8} alignItems={'center'}>
                         <Flex alignItems={'center'}>
-
-                            <NavLink to="/"><img src={logo}/></NavLink>
+                            <NavLink to="/" bg=''><img src={logo}/></NavLink>
                         </Flex>
                         <HStack
                             as={'nav'}
@@ -48,8 +49,8 @@ export default function Header() {
                     </HStack>
 
                     <Flex alignItems={'center'}>
-                        {user && <UserNavMenu/>}
-                        {!user && <NavLink to="/login">Login</NavLink>}
+                        {loggedIn && <UserNavMenu/>}
+                        {!loggedIn && <NavLink to="/login" bg="">Login</NavLink>}
                     </Flex>
 
                 </Flex>

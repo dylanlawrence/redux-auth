@@ -1,44 +1,21 @@
-import {Avatar, Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList} from "@chakra-ui/react";
-import NavLink from "./NavLink";
-import {LogoutRequest} from "../../features/auth/auth.types";
-
-import {useLogoutMutation} from "../../app/services/auth";
-import { useState } from "react";
-import {setCredentials} from "../../features/auth/authSlice";
-import {Link as RLink, useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../app/hooks";
-
-
+import {Avatar, Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text} from "@chakra-ui/react";
+import {Link as RLink} from "react-router-dom";
+import {getCurrentUser} from "../../features/user/userSlice";
+import {useSelector} from "react-redux";
+import {Logout} from "../Auth/Logout";
 
 const UserNavMenu = () => {
 
-    const dispatch = useAppDispatch()
-    const navigate = useNavigate()
-
-    const [formState, setFormState] = useState<LogoutRequest>({
-        session_id: '',
-    })
-    const [$logout] = useLogoutMutation()
-
-    const onLogout = async () => {
-        try {
-            await $logout(formState)
-                .unwrap()
-                .then((user) => {
-                    dispatch(setCredentials({}))
-                    navigate('/login');
-                })
-                .catch((error) => console.error(error))
-        } catch (err) {
-
-        }
-    }
-
-
+    const user = useSelector(getCurrentUser);
 
     return (
-
         <Menu>
+            <HStack
+                as={'nav'}
+                spacing={3}
+                display={{base: 'none', md: 'flex'}}>
+                <MenuButton p={3}><Text fontSize='xs' color="blue.700">{user?.email}</Text></MenuButton>
+            </HStack>
             <MenuButton
                 as={Button}
                 rounded={'full'}
@@ -47,15 +24,13 @@ const UserNavMenu = () => {
                 minW={0}>
                 <Avatar
                     size={'sm'}
-                    src={
-                        '/profile-placeholder.png'
-                    }
+                    src={`https://avatars.dicebear.com/api/avataaars/${user?.avatar}`}
                 />
             </MenuButton>
             <MenuList>
-                <MenuItem as={RLink} to={'/protected'}>Dashboard</MenuItem>
+                <MenuItem as={RLink} to={'/dashboard'}>Dashboard</MenuItem>
                 <MenuDivider/>
-                <MenuItem onClick={onLogout}>Logout</MenuItem>
+                <Logout as={MenuItem}/>
             </MenuList>
         </Menu>
     );

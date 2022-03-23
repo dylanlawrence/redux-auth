@@ -1,22 +1,22 @@
 import {RootState} from "../store";
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import {LoginRequest, LogoutRequest, LogoutResponse, UserResponse} from "../../features/auth/auth.types";
+import {LoginRequest, LogoutRequest, LogoutResponse, LoginResponse} from "../../features/auth/auth.types";
 
 export const api = createApi({
     reducerPath: "auth",
-        baseQuery: fetchBaseQuery({
-            baseUrl: '/',
-            prepareHeaders: (headers, {getState}) => {
-                // By default, if we have a token in the store, let's use that for authenticated requests
-                const token = (getState() as RootState).auth.token
-                if (token) {
-                    headers.set('authorization', `Bearer ${token}`)
-                }
-                return headers
-            },
-        }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: '/',
+        prepareHeaders: (headers, {getState}) => {
+            // By default, if we have a token in the store, let's use that for authenticated requests
+            const token = (getState() as RootState).auth.token
+            if (token) {
+                headers.set('authorization', `Bearer ${token}`)
+            }
+            return headers
+        },
+    }),
     endpoints: (build) => ({
-        login: build.mutation<UserResponse, LoginRequest>({
+        login: build.mutation<LoginResponse, LoginRequest>({
             query: (q) => {
                 return {
                     url: 'login',
@@ -38,5 +38,6 @@ export const api = createApi({
     })
 });
 
-export const {useLoginMutation, useLogoutMutation, useProtectedMutation} = api;
+
+export const {useLoginMutation, useLogoutMutation, useProtectedMutation, reducerPath, reducer, middleware} = api;
 

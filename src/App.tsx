@@ -7,26 +7,18 @@ import Login from "./components/Auth/Login";
 import {ProtectedComponent} from "./components/Auth/ProtectedComponent";
 import {Routes, Route,} from "react-router-dom";
 import Home from "./pages/Home";
-import Header from "./components/Header/Header";
+
+import {Layout} from "./layouts/Layout";
+import {Dashboard} from "./pages/Dashboard";
+import {LayoutSideBar} from "./layouts/LayoutSideBar";
 
 function App() {
     return (
-        <>
-            <Header/>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/protected"
-                       element={<RequireAuth><ProtectedComponent/></RequireAuth>}
-                />
-                <Route path="/protected/role"
-                       element={<RequireAuth requires={{role: "member"}}><ProtectedComponent/></RequireAuth>}
-                />
-                <Route path="/admin/config"
-                       element={<RequireAuth requires={{role: "admin"}}><ProtectedComponent/></RequireAuth>}
-                />
-            </Routes>
-        </>
+        <Routes>
+            <Route path="/" element={<Layout><Home/></Layout>}/>
+            <Route path="login" element={<Layout><Login/></Layout>}/>
+            <Route path="dashboard/*" element={<RequireAuth><LayoutSideBar><Dashboard/></LayoutSideBar></RequireAuth>}/>
+        </Routes>
     );
 }
 

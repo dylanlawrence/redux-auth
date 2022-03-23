@@ -1,14 +1,18 @@
 import {configureStore, ThunkAction, Action, ConfigureStoreOptions, combineReducers} from '@reduxjs/toolkit';
 
-import {api} from "./services/auth";
+
 import authReducer from '../features/auth/authSlice'
+import userReducer from '../features/user/userSlice'
 
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
+import {api} from "./services/auth";
+//    [api.reducerPath]: api.reducer,
+
 const reducers = combineReducers({
-    [api.reducerPath]: api.reducer,
     auth: authReducer,
+    user: userReducer,
 });
 const persistConfig = {
     key: 'root',
@@ -29,9 +33,10 @@ export const createStore = (
         devTools: process.env.NODE_ENV !== 'production',
     });
 
-/*middleware: (getDefaultMiddleware) =>
+/*
+middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
-...options*/
+*/
 
 
 

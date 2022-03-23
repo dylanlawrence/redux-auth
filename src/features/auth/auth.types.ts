@@ -1,9 +1,10 @@
+import {User} from "../user/user.types";
+
 export interface LoginRequest {
     username: string
     password: string
 }
-
-export interface UserResponse {
+export interface LoginResponse {
     user: User
     token: string
 }
@@ -16,10 +17,7 @@ export interface LogoutResponse {
     msg: string
 }
 
-export interface User {
-    first_name: string
-    last_name: string
-}
+
 
 
 
