@@ -2,12 +2,18 @@ import {
     Badge,
     Box,
     Button,
+    Center,
+    Flex,
     FormControl,
     FormLabel,
-    Input, InputElementProps,
+    Input,
+    InputElementProps,
     InputGroup,
-    InputLeftElement, InputProps,
-    Stack, Textarea
+    InputLeftElement,
+    InputProps,
+    Stack,
+    Textarea,
+    useColorModeValue
 } from "@chakra-ui/react";
 
 import {FaBuilding, FaEnvelope, FaPhone, FaUser,} from "react-icons/fa";
@@ -17,20 +23,25 @@ import {ImEarth} from "react-icons/im";
 import {useEffect, useState} from "react";
 import {User} from "../../features/user/user.types";
 import {useSelector} from "react-redux";
-import {getCurrentUser} from "../../features/user/userSlice";
-import InputMask, {Props} from "react-input-mask";
+import {defaultUserState, getCurrentUser} from "../../features/user/userSlice";
+import {IMaskInput} from "react-imask";
+import {IMaskInputProps} from "react-imask/dist/mixin";
 
 
-type _FloatyTypes = { type?: any } & Partial<InputProps> & Partial<Props> & {
-    label: string
+type _FloatyTypes = (Partial<IMaskInputProps> & Partial<InputProps> ) & {
+    label?: string
     value?: any
-    icon: JSX.Element
+    icon?: JSX.Element
+    as?: any
 }
+/*
+type FloatyProps = Partial<_FloatyTypes> & { 
+    type?: any 
+}*/
 
-type FloatyTypes = Partial<_FloatyTypes> &
-    { type?: any }
+type FloatyProps = Omit<_FloatyTypes, "accept" | "ref"> 
 
-function Floaty({label, icon, ...rest}: FloatyTypes) {
+function Floaty({label, icon, ...rest}: FloatyProps) {
     return (
         <FormControl variant='floating'>
             <InputGroup>
@@ -48,13 +59,12 @@ function Floaty({label, icon, ...rest}: FloatyTypes) {
 }
 
 export default function UserProfile() {
-    const user = useSelector(getCurrentUser);
-    const [state, setState] = useState<User>({});
+
+    const user = useSelector(getCurrentUser) as User;
+    const [state, setState] = useState<User>(defaultUserState.user as User);
 
     useEffect(() => {
-        console.log('SET USER')
-        // @ts-ignore
-        setState(user)
+        return setState(user);
     }, [user]);
 
     const update = (event: any) => {
@@ -67,40 +77,50 @@ export default function UserProfile() {
     }
 
     const updateProfile = (event: any) => {
+
         setState((prev) => {
-            return {
+            let r = {
                 ...prev,
                 profile: {
                     ...prev.profile,
                     [event.target.name]: event.target.value
                 },
             }
+            return r;
         })
     }
-
+    const PhoneMask = "(000)000-0000";
+    //const EmailMask = /^\S*@?\S*$/;
 
     return (
-        <Box>
-            <Stack spacing={8} p={8} bg="gray.100">
+        <Center justifyContent="center">
+        <Box maxW={{base:"100%",lg:"760", xl:"800"}}>
+            <Stack spacing={8} p={8} bg={useColorModeValue("gray.100", "gray.700")}>
 
                 <Stack direction='row' justifyContent="flex-end">
                     {state?.roles?.map((r, i) => {
-                        return <Badge variant='outline'>{r}</Badge>
+                        return <Badge key={i} variant='outline'>{r}</Badge>
                     })}
                 </Stack>
 
                 <Floaty value={state?.email} type="email" label="Email" name="email" icon={<FaEnvelope/>}
                         onChange={update}/>
 
-                <Floaty value={state?.profile?.phone}
-                        type="tel"
-                        as={InputMask}
-                        mask="(+1) 999 999 9999"
-                        label="Phone" name="phone"
-                        icon={<FaPhone/>}
-                        onChange={updateProfile}/>
                 <Floaty value={state?.profile?.name} type="text" label="Username" name="name" icon={<FaUser/>}
                         onChange={updateProfile}/>
+
+                <Floaty value={state?.profile?.phone}
+                        type="tel"
+                        as={IMaskInput}
+                        label="Phone"
+                        name="phone"
+                        icon={<FaPhone/>}
+                        onChange={updateProfile}
+                        mask={PhoneMask}
+                        onAccept={
+                            (value, mask) => console.log(value)
+                        }
+                />
 
                 <Floaty value={state?.profile?.dob} type="date" label="Date of Birth" name="dob" icon={<BiCalendar/>}
                         onChange={updateProfile}/>
@@ -111,7 +131,8 @@ export default function UserProfile() {
 
                 <FormControl variant='floating'>
                     <Textarea
-                        value={user?.profile?.about}
+                        value={state?.profile?.about}
+                        name="about"
                         onChange={updateProfile}
                         placeholder=' '
                         size='sm'
@@ -125,5 +146,7 @@ export default function UserProfile() {
 
             </Stack>
             {JSON.stringify(state)}
-        </Box>);
+        </Box>
+        </Center>
+        );
 }

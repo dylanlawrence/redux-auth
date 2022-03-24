@@ -2,12 +2,18 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 import type {RootState} from "../../app/store"
 import {User, UserState} from "./user.types";
 
-const initUser = {
+
+export const defaultUserState = {
     user: {
         email: '',
         avatar: '',
-        first_name: '',
-        last_name: '',
+        profile: {
+            name: '',
+            phone: '',
+            address: '',
+            about: '',
+            company: '',
+        },
         roles: []
     },
     logged_in: false
@@ -15,7 +21,7 @@ const initUser = {
 
 const slice = createSlice({
     name: "user",
-    initialState: initUser,
+    initialState: defaultUserState,
     reducers: {
         setUser: (
             state,
@@ -25,12 +31,13 @@ const slice = createSlice({
             state.logged_in = true
         },
         clearUser: (state => {
-            // @ts-ignore
-            state.user = initUser
-            state.logged_in = false
+            state.user = defaultUserState.user
+            state.logged_in = defaultUserState.logged_in
         }),
     },
 })
+
+
 
 export const {setUser, clearUser} = slice.actions
 export default slice.reducer

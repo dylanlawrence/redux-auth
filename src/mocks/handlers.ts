@@ -42,7 +42,7 @@ export const handlers = [
         sessionStorage.setItem('is-authenticated', 'false');
         sessionStorage.setItem('TOKEN', 'NOPE');
 
-        console.log('LOGOUT', headers, req, res);
+        //console.info('LOGOUT', headers, req, res);
 
         return res(
             ctx.delay(400),

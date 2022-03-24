@@ -10,12 +10,6 @@ const UserNavMenu = () => {
 
     return (
         <Menu>
-            <HStack
-                as={'nav'}
-                spacing={3}
-                display={{base: 'none', md: 'flex'}}>
-                <MenuButton p={3}><Text fontSize='xs' color="blue.700">{user?.email}</Text></MenuButton>
-            </HStack>
             <MenuButton
                 as={Button}
                 rounded={'full'}
@@ -24,7 +18,7 @@ const UserNavMenu = () => {
                 minW={0}>
                 <Avatar
                     size={'sm'}
-                    src={`https://avatars.dicebear.com/api/avataaars/${user?.avatar}`}
+                    src={`https://avatars.dicebear.com/api/avataaars/${user?.avatar}.svg`}
                 />
             </MenuButton>
             <MenuList zIndex={15}>

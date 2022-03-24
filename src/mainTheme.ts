@@ -21,7 +21,7 @@ export const theme = extendTheme({
                             borderRadius: 0,
                             borderBottom:'2px solid',
                             borderColor: '#CCC',
-                            backgroundColor: '#FFF',
+                            //backgroundColor: '#FFF',
                             boxShadow:'none',
                         },
                         textarea: {
@@ -29,7 +29,7 @@ export const theme = extendTheme({
                             borderRadius: 0,
                             borderBottom:'2px solid',
                             borderColor: '#CCC',
-                            backgroundColor: '#FFF',
+                            //backgroundColor: '#FFF',
                             boxShadow:'none',
                         },
                         _focusWithin: {
